@@ -4,8 +4,8 @@ import java.util.*;
 public class Main {
 
 	static int P1, P2, BT; //P1: length of queue 1, P2: length of queue 2, BT: sum of processes' burst time
-	static int q1counter, q2counter; //number of processes in each queue
-	static PCB processes[], Q1[], Q2[];
+	static int q1counter, q2counter; //keep track of the number of processes currently in queue 1 and queue 2.
+	static PCB processes[], Q1[], Q2[]; 
 	static LinkedList<String> ProcessesChart;
 	static Scanner input = new Scanner(System.in);
 
@@ -28,7 +28,7 @@ public class Main {
 					System.out.println("you need to enter processes first.");
 					break;
 				}
-                PrintReport1();
+                //PrintReport1();
 				break;
 			case 3:
 				System.out.println("Goodbye.");
@@ -76,17 +76,74 @@ public class Main {
         else
             P2++;
 
-        processes[i] = new PCB(String.format("P%d", i), arrivalT, burstT, priority);
+        processes[i] = new PCB(String.format("P%d", i), arrivalT, burstT, priority);// create PCB object and stores them in process array
 
     } // end for loop
+
+    // create Q1 and Q2 array based on the priority
     Q1 = new PCB[P1];
     Q2 = new PCB[P2];
-    MLQ();
+    MLQ(); // for scheduling the multilevel queue
 
     }
 
     static void MLQ() { //multilevel queue scheduler with fixed preemption
     }
+
+    static void shift() {
+		for(int i=1; i<q1counter; i++) {
+			Q1[i-1] = Q1[i];
+		}
+		Q1[--q1counter] = null;
+	}
+
+    // another way for shiffting
+    /**static void shift1() {
+        // Loop from the second element to the second-last element (exclusive)
+        for (int i = 1; i < q1counter - 1; i++) {
+          // Overwrite the current element with the next element
+          Q1[i] = Q1[i + 1];
+        }
+        
+        // Set the last element to null
+        Q1[q1counter - 1] = null;
+        
+        // Decrement the counter
+        q1counter--;
+      }**/
+
+      static void reschedule() {
+		PCB tempProcess = Q2[0];
+		for(int i=1; i<q2counter; i++) { // for shiffting
+			Q2[i-1] = Q2[i];
+		}
+        if(tempProcess.getCpuBurst() != tempProcess.finishedBurst) {
+			Q2[q2counter-1] = tempProcess;
+		}
+		else {
+			Q2[--q2counter] = null;
+		}
+	}
+
+    static PCB[] arrivedprocesses(int arrival) {
+		int i=0;
+		for(PCB process : processes) {
+			if(process.getArrivalTime()<=arrival && !process.assigned) {
+				i++;
+			}
+		}
+
+		PCB arrived[] = new PCB[i];
+		i=0;
+		for(PCB process : processes) {
+			if(process.getArrivalTime()<=arrival && !process.assigned) {
+				arrived[i++] = process;
+			}
+		}
+
+		return arrived;
+	}
+    
 
 
 }

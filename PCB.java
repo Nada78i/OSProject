@@ -27,6 +27,9 @@ public class PCB {
 
     private int responseTime;
 
+    int finishedBurst=0;
+    boolean assigned=false;
+
 
 
     public PCB(String processId, int priority, int arrivalTime, int cpuBurst) {
