@@ -150,19 +150,17 @@ public class Main {
               RR();
             }
 	 static void SJF() {
-                int numberOfProcesses = q1counter;
-                for (PCB process : Q2) {
-                    int minIndex = 0;
-                    int minBurstTime = Integer.MAX_VALUE;
-                    for (int j = 0; j < numberOfProcesses; j++) {
-                        if (Q2[j].getCpuBurst() < minBurstTime) {
-                            minBurstTime = Q2[j].getCpuBurst();
-                            minIndex = j;
+                int n = q1counter;
+                for (int i = 0; i < n; i++) {
+                    int min = i;
+                    for (int j = i + 1; j < n; j++) {
+                        if (Q2[j].getCpuBurst() < Q2[min].getCpuBurst()) {
+                            min = j;
                         }
                     }
-                    PCB temp = Q2[numberOfProcesses - 1];
-                    Q2[numberOfProcesses - 1] = Q2[minIndex];
-                    Q2[minIndex] = temp;
+                    PCB temp = Q2[i];
+                    Q2[i] = Q2[min];
+                    Q2[min] = temp;
                 }
             }
             
