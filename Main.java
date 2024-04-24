@@ -13,7 +13,7 @@ public class Main {
 		int choice = 0;
 		System.out.println("This program simulates how a CPU schedules tasks.");
 
-		while(choice != 4) {
+		while(choice != 3) {
 			System.out.println("What do you want to do next: ");
 			System.out.println("1. Enter processes' information");
 			System.out.println("2. Report detailed information about each process and different scheduling criteria.");
