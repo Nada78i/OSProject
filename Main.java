@@ -145,7 +145,7 @@ public class Main {
                     Q2[q2counter++] = process;}
                     process.assigned = true; //assigned?
                 }
-              //SJF(); shorest job first call here
+              SJF(); 
               RR();
             }
 	 static void SJF() {
