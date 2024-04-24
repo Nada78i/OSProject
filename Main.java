@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+//1import java.util.stream.DoubleStream;
 
 public class Main {
 
@@ -28,7 +29,7 @@ public class Main {
 					System.out.println("you need to enter processes first.");
 					break;
 				}
-                //PrintReport1();
+                printReport();
 				break;
 			case 3:
 				System.out.println("Goodbye.");
@@ -151,7 +152,7 @@ public class Main {
 	 static void SJF() {
                 int numberOfProcesses = q1counter;
                 for (PCB process : Q2) {
-                    int minIndex = -1;
+                    int minIndex = 0;
                     int minBurstTime = Integer.MAX_VALUE;
                     for (int j = 0; j < numberOfProcesses; j++) {
                         if (Q2[j].getCpuBurst() < minBurstTime) {
@@ -254,5 +255,76 @@ public class Main {
 
 }// RR end
 
+public static void printReport() throws IOException {
+
+    // Print table headers with basic formatting
+    System.out.println("Process ID  | Priority  | CPU Burst | Arrival Time | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time");
+    System.out.println("-----------|-----------|-----------|--------------|------------|-----------------|-----------------|--------------|----------------");
+  
+    // Print process data using formatted strings
+    for (PCB process : processes) {
+      System.out.printf("%-12s | %-10d | %-10d | %-12d | %-10d | %-18d | %-18d | %-12d | %-12d\n",
+          process.getProcessId(), process.getPriority(), process.getCpuBurst(), process.getArrivalTime(),
+          process.getStartTime(), process.getTerminationTime(), process.getTurnaroundTime(), process.getWaitingTime(), process.getResponseTime());
+    }
+  
+    // Print scheduling order chart (assuming ProcessesChart.get(i) returns a single character)
+    System.out.print("\nScheduling order chart: [");
+    for (int i = 0; i < processes.length - 1; i++) {
+      System.out.print(ProcessesChart.get(i) + "|");
+    }
+    System.out.println(ProcessesChart.get(processes.length - 1) + "]");
+  
+    // Write report to file using PrintWriter with try-with-resources
+    try (PrintWriter writer = new PrintWriter("Report1.txt")) {
+      writer.println("Process ID  | Priority  | CPU Burst | Arrival Time | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time");
+      writer.println("-----------|-----------|-----------|--------------|------------|-----------------|-----------------|--------------|----------------");
+      for (PCB process : processes) {
+        writer.printf("%-12s | %-10d | %-10d | %-12d | %-10d | %-18d | %-18d | %-12d | %-12d\n",
+            process.getProcessId(), process.getPriority(), process.getCpuBurst(), process.getArrivalTime(),
+            process.getStartTime(), process.getTerminationTime(), process.getTurnaroundTime(), process.getWaitingTime(), process.getResponseTime());
+      }
+
+  
+      // Print scheduling order chart directly using a loop (assuming single characters)
+      writer.print("\nScheduling order chart: [");
+      for (int i = 0; i < processes.length - 1; i++) {
+        writer.print(ProcessesChart.get(i) + "|");
+      }
+      writer.println(ProcessesChart.get(processes.length - 1) + "]");
+      double totalTurnAroundTime = 0.0;
+      double totalWaitingTime = 0.0;
+      double totalResponseTime = 0.0;
+      for (PCB process : processes) {
+        totalTurnAroundTime += process.getTurnaroundTime();
+        totalWaitingTime += process.getWaitingTime();
+        totalResponseTime += process.getResponseTime();
+      }
+      double avgTurnAroundTime = totalTurnAroundTime / processes.length;
+      double avgWaitingTime = totalWaitingTime / processes.length;
+      double avgResponseTime = totalResponseTime / processes.length;
+  
+      writer.printf("\nAverage Turnaround Time: %.1f", avgTurnAroundTime);
+      writer.printf("Average Waiting Time: %.1f", avgWaitingTime);
+      writer.printf("Average Response Time: %.1f", avgResponseTime);
+
+
+
+    } catch (IOException e) {
+      System.err.println("Error writing report to file: " + e.getMessage());
+    }
+
+   
+
 
 }
+
+
+
+
+}
+
+
+
+
+
