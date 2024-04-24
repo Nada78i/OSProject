@@ -88,7 +88,67 @@ public class Main {
     }
 
     static void MLQ() { //multilevel queue scheduler with fixed preemption
+        ProcessesChart = new LinkedList<String>();
+        int timer = 0;
+    
+        while(timer < BT){
+            assign(timer);
+            if(Q1.length > 0 && Q1[0] != null){
+                if(Q2.length > 0 && Q2[0] != null && Q2[0].finishedBurst != 0)
+                reschedule();
+    
+                Q1[0].setStartTime(timer);
+                Q1[0].setTerminationTime(timer + Q1[0].getCpuBurst());
+                Q1[0].setTurnaroundTime(Q1[0].getTerminationTime() - Q1[0].getArrivalTime());
+                Q1[0].setWaitingTime(Q1[0].getTurnaroundTime() - Q1[0].getCpuBurst());
+                Q1[0].setResponseTime(Q1[0].getStartTime() - Q1[0].getArrivalTime());
+    
+                int t = timer;
+                timer += Q1[0].getCpuBurst();
+    
+                while(t < timer)
+                ProcessesChart.add(t++, Q1[0].getProcessId());
+    
+                shift();
+            }
+            else if(Q2.length > 0 && Q2[0] != null) {
+                if(Q2[0].finishedBurst == 0)
+                    Q2[0].setStartTime(timer);
+    
+                ProcessesChart.add(timer++, Q2[0].getProcessId());
+    
+                if(Q2[0].finishedBurst < Q2[0].getCpuBurst())
+                    Q2[0].finishedBurst++;
+            
+            
+            if(Q2[0].finishedBurst == Q2[0].getCpuBurst()){
+                Q2[0].setStartTime(timer);
+                Q2[0].setTurnaroundTime(Q2[0].getTerminationTime() - Q2[0].getArrivalTime());
+                Q2[0].setWaitingTime(Q2[0].getTurnaroundTime() - Q2[0].getCpuBurst());
+                Q2[0].setResponseTime(Q2[0].getStartTime() - Q2[0].getArrivalTime());
+                reschedule();
+            }
+        }
+        else {
+            ProcessesChart.add(timer++, "  ");
+            BT++;
+        }
     }
+}
+    static void assign(int arrivalTime){
+        PCB arrivedQ[] = arrivedprocesses(arrivalTime);//arrivedprocesses from where did we get it ?
+        int c = q2counter;
+        for(PCB process : arrivedQ){
+            if(Q1.length >0 && process.getPriority() == 1){//where did we get Priority?
+                Q1[q1counter++] = process;}
+                else if(Q2.length > 0){
+                    Q2[q2counter++] = process;}
+                    process.assigned = true; //assigned?
+                }
+              //SJF(); shorest job first call here
+              //RR();round robuin call here  
+            }
+        
 
     static void shift() {
 		for(int i=1; i<q1counter; i++) {
