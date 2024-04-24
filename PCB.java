@@ -28,6 +28,7 @@ public class PCB {
     private int responseTime;
 
     int finishedBurst=0;
+
     boolean assigned=false;
 
 
@@ -73,6 +74,12 @@ public class PCB {
     public int getCpuBurst() {
 
         return cpuBurst;
+
+    }
+
+    public void setCpuBurst(int cpuBurst) {
+
+    this.cpuBurst = cpuBurst;
 
     }
 
