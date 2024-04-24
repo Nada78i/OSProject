@@ -146,6 +146,7 @@ public class Main {
                     process.assigned = true; //assigned?
                 }
               //SJF(); shorest job first call here
+              RR();
             }
 	 static void SJF() {
                 int numberOfProcesses = q1counter;
@@ -220,6 +221,38 @@ public class Main {
 		return arrived;
 	}
     
+    static void RR() {
+        int q = 3; //quantum 
+
+        while (q1counter != 0) {
+            PCB processRR = Q1[0];
+
+            if (processRR.getCpuBurst() <= q) {
+            
+            //Termination Time :
+            processRR.setTerminationTime(processRR.getStartTime() + processRR.getCpuBurst());
+            //Turnaround Time :
+            processRR.setTurnaroundTime(processRR.getTerminationTime() - processRR.getArrivalTime());
+            //waiting Time :
+            processRR.setWaitingTime(processRR.getTurnaroundTime() - processRR.getCpuBurst());
+            //Response Time :
+            processRR.setResponseTime(processRR.getStartTime() - processRR.getArrivalTime());
+            processRR.setCpuBurst(0);
+
+            shift();
+            } // if end
+            else
+            {
+            processRR.setCpuBurst(processRR.getCpuBurst() - q);
+            processRR.setStartTime(processRR.getStartTime() + q);
+            shift();
+            Q1[q1counter++] = processRR;
+
+            } // else end
+
+    } // while end
+
+}// RR end
 
 
 }
