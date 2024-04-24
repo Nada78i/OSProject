@@ -147,6 +147,23 @@ public class Main {
                 }
               //SJF(); shorest job first call here
             }
+	 static void SJF() {
+                int numberOfProcesses = q1counter;
+                for (PCB process : Q2) {
+                    int minIndex = -1;
+                    int minBurstTime = Integer.MAX_VALUE;
+                    for (int j = 0; j < numberOfProcesses; j++) {
+                        if (Q2[j].getCpuBurst() < minBurstTime) {
+                            minBurstTime = Q2[j].getCpuBurst();
+                            minIndex = j;
+                        }
+                    }
+                    PCB temp = Q2[numberOfProcesses - 1];
+                    Q2[numberOfProcesses - 1] = Q2[minIndex];
+                    Q2[minIndex] = temp;
+                }
+            }
+            
         
 
     static void shift() {
