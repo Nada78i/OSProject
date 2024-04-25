@@ -1,0 +1,8 @@
+Process ID  | Priority  | CPU Burst | Arrival Time | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time
+-----------|-----------|-----------|--------------|------------|-----------------|-----------------|--------------|----------------
+P0           | 2          | 2          | 2            | 4          | 0                  | -2                 | -4           | 2           
+P1           | 1          | 2          | 2            | 6          | 0                  | -2                 | -4           | 4           
+
+Scheduling order chart: [  |  ]
+
+Average Turnaround Time: -2.0Average Waiting Time: -4.0Average Response Time: 3.0

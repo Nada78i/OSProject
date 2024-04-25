@@ -153,8 +153,10 @@ public class Main {
               SJF(); 
               RR();
             }
+
 	 static void SJF() {
                 int n = q1counter;
+                
                 for (int i = 0; i < n; i++) {
                     int min = i;
                     for (int j = i + 1; j < n; j++) {
@@ -166,15 +168,18 @@ public class Main {
                     Q2[i] = Q2[min];
                     Q2[min] = temp;
                 }
+            
             }
             
         
 
     static void shift() {
-		for(int i=1; i<q1counter; i++) {
-			Q1[i-1] = Q1[i];
+
+		for(int i= 0; i<q1counter - 1; i++) {
+            Q1[i] = Q1[i + 1];
 		}
-		Q1[--q1counter] = null;
+		q1counter--;
+
 	}
 
     // another way for shiffting
@@ -223,12 +228,62 @@ PCB arrived[] = new PCB[i];
 
 		return arrived;
 	}
+    
     static void RR() {
         int q = 3; //quantum 
+    
+        // Sort Q1 based on arrival time
+        Arrays.sort(Q1, 0, q1counter, Comparator.comparingInt(PCB::getArrivalTime));
+    
+        int timer = 0; // Initialize a timer
+    
+        // Iterate over each process in Q1
+        for (int i = 0; i < q1counter; i++) {
+            PCB processRR = Q1[i];
+    
+            // If the process has arrived and has not finished its burst
+            if (processRR.getArrivalTime() <= timer && processRR.getCpuBurst() > 0) {
+                // Calculate start time, termination time, turnaround time, waiting time, and response time
+                processRR.setStartTime(timer);
+                if (processRR.getCpuBurst() <= q) {
+                    timer += processRR.getCpuBurst();
+                    processRR.setCpuBurst(0);
+                } else {
+                    timer += q;
+                    processRR.setCpuBurst(processRR.getCpuBurst() - q);
+                }
+                processRR.setTerminationTime(timer);
+                processRR.setTurnaroundTime(processRR.getTerminationTime() - processRR.getArrivalTime());
+                processRR.setWaitingTime(processRR.getTurnaroundTime() - processRR.getCpuBurst());
+                processRR.setResponseTime(processRR.getStartTime() - processRR.getArrivalTime());
+    
+                // If the process has finished its burst, remove it from Q1
+                if (processRR.getCpuBurst() == 0) {
+                    shift(i);
+                    i--; // Decrement i to account for the shifted processes
+                }
+            }
+        }
+    }
+    
+    static void shift(int index) {
+        for (int i = index; i < q1counter - 1; i++) {
+            Q1[i] = Q1[i + 1];
+        }
+        q1counter--;
+    }
+    
 
+
+
+
+    /*static void RR() {
+        int q = 3; //quantum 
+        
         while (q1counter != 0) {
+            System.out.println("in while RR");
             PCB processRR = Q1[0];
-
+            System.out.println("in RR");
             if (processRR.getCpuBurst() <= q) {
             
             //Termination Time :
@@ -239,8 +294,10 @@ PCB arrived[] = new PCB[i];
             processRR.setWaitingTime(processRR.getTurnaroundTime() - processRR.getCpuBurst());
             //Response Time :
             processRR.setResponseTime(processRR.getStartTime() - processRR.getArrivalTime());
+    
+            System.out.println("in if RR without set and shift");
             processRR.setCpuBurst(0);
-
+    
             shift();
             } // if end
             else
@@ -249,12 +306,15 @@ PCB arrived[] = new PCB[i];
             processRR.setStartTime(processRR.getStartTime() + q);
             shift();
             Q1[q1counter++] = processRR;
-
+            System.out.println("in else RR");
             } // else end
-
-    } // while end
-
-}// RR end
+    
+    
+        } // while end
+        System.out.println("in end RR");
+    }// RR end*/
+    
+    
 
 public static void printReport() throws IOException {
 
@@ -313,7 +373,6 @@ public static void printReport() throws IOException {
       System.err.println("Error writing report to file: " + e.getMessage());
     }
 
-   
 
 
 
