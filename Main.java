@@ -157,6 +157,7 @@ public class Main {
 	 static void SJF() {
                 int n = q1counter;
                 
+                if (n > 0) {
                 for (int i = 0; i < n; i++) {
                     int min = i;
                     for (int j = i + 1; j < n; j++) {
@@ -170,6 +171,7 @@ public class Main {
                 }
             
             }
+        }
             
         
 
@@ -232,12 +234,14 @@ PCB arrived[] = new PCB[i];
     static void RR() {
         int q = 3; //quantum 
     
+        if (q1counter > 0) {
         // Sort Q1 based on arrival time
         Arrays.sort(Q1, 0, q1counter, Comparator.comparingInt(PCB::getArrivalTime));
     
         int timer = 0; // Initialize a timer
     
         // Iterate over each process in Q1
+        
         for (int i = 0; i < q1counter; i++) {
             PCB processRR = Q1[i];
     
@@ -264,6 +268,7 @@ PCB arrived[] = new PCB[i];
                 }
             }
         }
+    }// if end
     }
     
     static void shift(int index) {
