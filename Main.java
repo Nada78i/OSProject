@@ -61,17 +61,17 @@ public class Main {
 
 
         do {
-            System.out.printf("Enter priority of process P%d: ", i);
+            System.out.printf("Enter priority of process P%d: ", i+1);
             priority = input.nextInt();
         } while(priority != 1 && priority !=2); 
 
         do {
-            System.out.printf("Enter arrival time of process P%d: ", i);
+            System.out.printf("Enter arrival time of process P%d: ", i+1);
             arrivalT = input.nextInt();
         } while(arrivalT<0);
 
         do {
-            System.out.printf("Enter burst time of process P%d: ", i);
+            System.out.printf("Enter burst time of process P%d: ", i+1);
             burstT = input.nextInt();
         } while(burstT<=0);
 
@@ -82,7 +82,7 @@ public class Main {
         else
             P2++;
 
-        processes[i] = new PCB(String.format("P%d", i), arrivalT, burstT, priority);// create PCB object and stores them in process array
+        processes[i] = new PCB(String.format("P%d", i+1), arrivalT, burstT, priority);// create PCB object and stores them in process array
 
     }// end for loop
 
@@ -95,7 +95,8 @@ public class Main {
     static void MLQ() { //multilevel queue scheduler with fixed preemption
         ProcessesChart = new LinkedList<String>();
         int timer = 0;
-    
+
+        while (q1counter != 0 || q2counter != 0) {
         while(timer < BT){
             assign(timer);
             if(Q1.length > 0 && Q1[0] != null){
@@ -141,6 +142,10 @@ public class Main {
     }
 }
     static void assign(int arrivalTime){
+}
+    
+
+static void assign(int arrivalTime){
         PCB arrivedQ[] = arrivedprocesses(arrivalTime);//arrivedprocesses from where did we get it ? 
        // int c = q2counter;
         for(PCB process : arrivedQ){
@@ -335,11 +340,13 @@ public static void printReport() throws IOException {
     }
   
     // Print scheduling order chart (assuming ProcessesChart.get(i) returns a single character)
+    if (!ProcessesChart.isEmpty()) {
     System.out.print("\nScheduling order chart: [");
     for (int i = 0; i < processes.length - 1; i++) {
       System.out.print(ProcessesChart.get(i) + "|");
     }
     System.out.println(ProcessesChart.get(processes.length - 1) + "]");
+}
   
     // Write report to file using PrintWriter with try-with-resources
     try (PrintWriter writer = new PrintWriter("Report1.txt")) {
@@ -351,11 +358,13 @@ public static void printReport() throws IOException {
             process.getStartTime(), process.getTerminationTime(), process.getTurnaroundTime(), process.getWaitingTime(), process.getResponseTime());
       }
       // Print scheduling order chart directly using a loop (assuming single characters)
+      if (!ProcessesChart.isEmpty()) {
       writer.print("\nScheduling order chart: [");
       for (int i = 0; i < processes.length - 1; i++) {
         writer.print(ProcessesChart.get(i) + "|");
       }
       writer.println(ProcessesChart.get(processes.length - 1) + "]");
+    }
       double totalTurnAroundTime = 0.0;
       double totalWaitingTime = 0.0;
       double totalResponseTime = 0.0;
