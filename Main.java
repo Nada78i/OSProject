@@ -12,33 +12,38 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		int choice = 0;
-		System.out.println("This program simulates how a CPU schedules tasks.");
 
-		while(choice != 3) {
-			System.out.println("What do you want to do next: ");
-			System.out.println("1. Enter processes' information");
-			System.out.println("2. Report detailed information about each process and different scheduling criteria.");
-			System.out.println("3. Exit the program.");
-			choice = input.nextInt();
-			switch(choice) {
-			case 1:
-				ProcessInfo();
-				break;
-			case 2:
-				if(processes == null) {
-					System.out.println("you need to enter processes first.");
-					break;
-				}
-                printReport();
-				break;
-			case 3:
-				System.out.println("Goodbye.");
-				break;
-			default: choice = 0;
-			}
-		}
-		input.close();
-	}
+        do {
+            System.out.println("This program simulates how a CPU schedules tasks.");
+            System.out.println("What do you want to do next: ");
+            System.out.println("1. Enter processes' information");
+            System.out.println("2. Report detailed information about each process and different scheduling criteria.");
+            System.out.println("3. Exit the program.");
+
+            choice = input.nextInt();
+
+            switch (choice) {
+                case 1:
+                    ProcessInfo();
+                    break;
+                case 2:
+                    if (processes == null) {
+                        System.out.println("You need to enter processes first.");
+                    } else {
+                        printReport();
+                    }
+                    break;
+                case 3:
+                    System.out.println("Goodbye.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 3.");
+            }
+        } while (choice != 3);
+
+        input.close();
+    }
+
     static void ProcessInfo() { //take user input and store it in processes array
 
         P1=0; P2=0; BT=0; q1counter=0; q2counter=0;
@@ -79,15 +84,14 @@ public class Main {
 
         processes[i] = new PCB(String.format("P%d", i), arrivalT, burstT, priority);// create PCB object and stores them in process array
 
-    } // end for loop
+    }// end for loop
 
     // create Q1 and Q2 array based on the priority
     Q1 = new PCB[P1];
     Q2 = new PCB[P2];
     MLQ(); // for scheduling the multilevel queue
-
     }
-
+    
     static void MLQ() { //multilevel queue scheduler with fixed preemption
         ProcessesChart = new LinkedList<String>();
         int timer = 0;
@@ -137,8 +141,8 @@ public class Main {
     }
 }
     static void assign(int arrivalTime){
-        PCB arrivedQ[] = arrivedprocesses(arrivalTime);//arrivedprocesses from where did we get it ?
-        int c = q2counter;
+        PCB arrivedQ[] = arrivedprocesses(arrivalTime);//arrivedprocesses from where did we get it ? 
+       // int c = q2counter;
         for(PCB process : arrivedQ){
             if(Q1.length >0 && process.getPriority() == 1){//where did we get Priority?
                 Q1[q1counter++] = process;}
@@ -209,7 +213,7 @@ public class Main {
 			}
 		}
 
-		PCB arrived[] = new PCB[i];
+PCB arrived[] = new PCB[i];
 		i=0;
 		for(PCB process : processes) {
 			if(process.getArrivalTime()<=arrival && !process.assigned) {
@@ -219,7 +223,6 @@ public class Main {
 
 		return arrived;
 	}
-    
     static void RR() {
         int q = 3; //quantum 
 
@@ -282,8 +285,6 @@ public static void printReport() throws IOException {
             process.getProcessId(), process.getPriority(), process.getCpuBurst(), process.getArrivalTime(),
             process.getStartTime(), process.getTerminationTime(), process.getTurnaroundTime(), process.getWaitingTime(), process.getResponseTime());
       }
-
-  
       // Print scheduling order chart directly using a loop (assuming single characters)
       writer.print("\nScheduling order chart: [");
       for (int i = 0; i < processes.length - 1; i++) {
@@ -315,13 +316,12 @@ public static void printReport() throws IOException {
    
 
 
-}
 
 
 
 
-}
 
+}}
 
 
 
