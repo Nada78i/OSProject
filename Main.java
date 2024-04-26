@@ -96,7 +96,7 @@ public class Main {
         ProcessesChart = new LinkedList<String>();
         int timer = 0;
 
-        while (q1counter != 0 || q2counter != 0) {
+        //while (q1counter != 0 || q2counter != 0){ 
         while(timer < BT){
             assign(timer);
             if(Q1.length > 0 && Q1[0] != null){
@@ -141,8 +141,8 @@ public class Main {
         }
     }
 }
-    static void assign(int arrivalTime){
-}
+    //static void assign(int arrivalTime){
+    //}
     
 
 static void assign(int arrivalTime){
@@ -329,28 +329,28 @@ PCB arrived[] = new PCB[i];
 public static void printReport() throws IOException {
 
     // Print table headers with basic formatting
-    System.out.println("Process ID  | Priority  | CPU Burst | Arrival Time | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time");
+    System.out.println("Process ID  | Priority  | Arrival Time | CPU Burst | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time");
     System.out.println("-----------|-----------|-----------|--------------|------------|-----------------|-----------------|--------------|----------------");
   
     // Print process data using formatted strings
     for (PCB process : processes) {
       System.out.printf("%-12s | %-10d | %-10d | %-12d | %-10d | %-18d | %-18d | %-12d | %-12d\n",
-          process.getProcessId(), process.getPriority(), process.getCpuBurst(), process.getArrivalTime(),
+          process.getProcessId(), process.getPriority(), process.getArrivalTime(), process.getCpuBurst(),
           process.getStartTime(), process.getTerminationTime(), process.getTurnaroundTime(), process.getWaitingTime(), process.getResponseTime());
     }
   
     // Print scheduling order chart (assuming ProcessesChart.get(i) returns a single character)
-    if (!ProcessesChart.isEmpty()) {
+    /**if (!ProcessesChart.isEmpty()) {
     System.out.print("\nScheduling order chart: [");
     for (int i = 0; i < processes.length - 1; i++) {
       System.out.print(ProcessesChart.get(i) + "|");
     }
     System.out.println(ProcessesChart.get(processes.length - 1) + "]");
-}
+}**/
   
     // Write report to file using PrintWriter with try-with-resources
     try (PrintWriter writer = new PrintWriter("Report1.txt")) {
-      writer.println("Process ID  | Priority  | CPU Burst | Arrival Time | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time");
+      writer.println("Process ID  | Priority  | Arrival Time | CPU Burst | Start Time | Termination Time | Turn Around Time | Waiting Time | Response Time");
       writer.println("-----------|-----------|-----------|--------------|------------|-----------------|-----------------|--------------|----------------");
       for (PCB process : processes) {
         writer.printf("%-12s | %-10d | %-10d | %-12d | %-10d | %-18d | %-18d | %-12d | %-12d\n",
@@ -358,13 +358,13 @@ public static void printReport() throws IOException {
             process.getStartTime(), process.getTerminationTime(), process.getTurnaroundTime(), process.getWaitingTime(), process.getResponseTime());
       }
       // Print scheduling order chart directly using a loop (assuming single characters)
-      if (!ProcessesChart.isEmpty()) {
+      //if (!ProcessesChart.isEmpty()) {
       writer.print("\nScheduling order chart: [");
       for (int i = 0; i < processes.length - 1; i++) {
         writer.print(ProcessesChart.get(i) + "|");
       }
       writer.println(ProcessesChart.get(processes.length - 1) + "]");
-    }
+   // }
       double totalTurnAroundTime = 0.0;
       double totalWaitingTime = 0.0;
       double totalResponseTime = 0.0;
